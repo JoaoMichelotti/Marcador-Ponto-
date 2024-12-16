@@ -9,3 +9,9 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.active {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+}

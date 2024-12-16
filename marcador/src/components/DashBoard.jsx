@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-
 const Modelo = styled.div`
     padding: 32px;    
     box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    max-width: 600px;
-    min-width: 500px;
+    max-width: 650px;
+    min-width: 650px;
+    display: flex;
+    flex-direction: column;
 `
 
-const StlTable = styled.table`
+    const StlTable = styled.table`
     width: 100%;
     border-collapse: collapse;
     font-size: 18px;
@@ -28,6 +29,11 @@ const StlTable = styled.table`
 
     thead th {
         padding: 10px;
+        text-align:center;
+    }
+
+    tbody td {
+        text-align: center;
     }
 
 `
@@ -50,9 +56,8 @@ export default function Tabela(props){
                 <tbody>
                     {props.children}
                 </tbody>
-               
-                
             </StlTable>
+            {props.pagination}
         </Modelo>
     
     </>
