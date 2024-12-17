@@ -8,6 +8,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(to top, #8a8282, #c5dad5);
 }
 
 .active {

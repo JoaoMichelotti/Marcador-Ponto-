@@ -6,6 +6,7 @@ const Modelo = styled.div`
     padding: 32px;    
     box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+    background-color: #fff;
 `
 
 const Formulario = styled.form`

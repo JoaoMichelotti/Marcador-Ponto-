@@ -9,6 +9,7 @@ const Modelo = styled.div`
     min-width: 650px;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
 `
 
     const StlTable = styled.table`

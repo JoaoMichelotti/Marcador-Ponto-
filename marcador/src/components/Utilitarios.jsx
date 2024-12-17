@@ -13,6 +13,7 @@ const Modelo = styled.div`
     max-width: 650px;
     min-width: 650px;
     margin-left: auto;
+    background-color: #fff;
 `
 
 const TotalTime = styled.div`
@@ -54,7 +55,9 @@ export default function Utilitarios(props){
                             borderRadius: "20px",
                             fontSize: "20px",
                             textAlign: "center",
-                            width: "120px"
+                            width: "120px",
+                            marginBottom: "auto",
+                            marginTop: "auto"
                         }}
                     >
                         {({ loading }) => loading ? 'Gerando PDF...' : 'Baixar PDF'}
