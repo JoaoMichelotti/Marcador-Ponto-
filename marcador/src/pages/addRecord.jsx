@@ -172,8 +172,8 @@ export default function AddRecord(){
                             <td>{item.hSaida}</td>
                             <td>{dataLocal.toLocaleDateString('pt-BR')}</td>
                             <td>{TimeConvert(item, "Individual")}</td>
-                            <td><Buttons imagem="./editar-texto.png" info="editar" onClick={() => Editar(index)}/>
-                            <Buttons imagem="./remover.png" info="remover" onClick={() => Remover(index)}/>
+                            <td><Buttons imagem="/editar-texto.png" info="editar" onClick={() => Editar(index)}/>
+                            <Buttons imagem="/remover.png" info="remover" onClick={() => Remover(index)}/>
                                 </td>
                         </tr>
                       
