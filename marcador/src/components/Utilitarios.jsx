@@ -22,7 +22,7 @@ const TotalTime = styled.div`
     color: #fff;
     padding: 12px;
     font-size: 20px;
-    width: 120px;
+    min-width: 120px;
     text-align: center;
 
 `

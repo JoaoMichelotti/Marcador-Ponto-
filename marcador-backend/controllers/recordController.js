@@ -19,7 +19,7 @@ const getAllRecordsForAUser = async (req, res) => {
     const { id_user } = req.body;
 
     try {
-        const [rows] = await db.query("select id, time_format(hentrada, '%H:%i') as hEntrada, time_format(hsaida, '%H:%i') as hSaida, datahoje as data from userslogs where id_user = ?", [id_user])
+        const [rows] = await db.query("select id, time_format(hentrada, '%H:%i') as hEntrada, time_format(hsaida, '%H:%i') as hSaida, date(datahoje) as data from userslogs where id_user = ?", [id_user])
         res.status(200).json(rows)
     }
     catch(err){''

@@ -34,5 +34,28 @@ async function getAllLogs(id_user) {
     })
 }
 
+async function updateLog(log) {
+    return axios({
+        method: "POST",
+        url: "http://localhost:5000/updaterecord",
+        data: {
+            hentrada: log.hEntrada,
+            hsaida: log.hSaida,
+            datahoje: log.data,
+            id_user: log.id_user
+        }
+    })
+}
 
-export {checkEmail, createLog, getAllLogs}
+async function deleteLog(log) {
+    return axios({
+        method: "POST",
+        url: "http://localhost:5000/deleterecord",
+        data: {
+            id: log.id
+        }
+    })
+}
+
+
+export {checkEmail, createLog, getAllLogs, updateLog, deleteLog}

@@ -8,7 +8,7 @@ import Buttons from "../components/Buttons";
 import Pagination from "../components/Pagination";
 import Utilitarios from "../components/Utilitarios";
 import { useNavigate } from "react-router-dom";
-import { getAllLogs, createLog } from "../functions/ServerRiquisitions";
+import { getAllLogs, createLog, updateLog, deleteLog} from "../functions/ServerRiquisitions";
 
 export default function AddRecord(){
 
@@ -35,6 +35,7 @@ export default function AddRecord(){
         getAllLogs(id_userC).then((res) => { 
             if (res.status === 200) {
                 setTabelinha(res.data)
+                
             }
         }).catch((error) => {   
 
@@ -48,7 +49,7 @@ export default function AddRecord(){
 
         const itemsSlice = tabelinha.slice(firstPostIndex, lastPostIndex)
         setSlice(itemsSlice)
-
+        console.log(tabelinha)
     }, [tabelinha, currentPage])
 
     function Mudar(evento) {
@@ -60,17 +61,28 @@ export default function AddRecord(){
     function Enviar(evento) {
         evento.preventDefault();
 
-        
-
         const novoConteudo = { ...conteudo, id_user: id_userC };
         setConteudo(novoConteudo);
 
-        console.log(conteudo)
+        console.log(novoConteudo)
         if (itemIndex != null) {
-            const atualizado = [...tabelinha]
-            atualizado[itemIndex] = conteudo
-            setTabelinha(atualizado)
-            setItemIndex(null)
+
+            updateLog(novoConteudo).then((res) => {
+
+                if (res.status === 200) {
+                    console.log("Registro atualizado com sucesso!")
+                    const atualizado = [...tabelinha]
+                    atualizado[itemIndex] = novoConteudo
+                    setTabelinha(atualizado)
+                    setItemIndex(null)
+                }
+            }).catch((error) => {  
+                console.error("Erro no servidor:", error);
+            })
+            //const atualizado = [...tabelinha]
+            //atualizado[itemIndex] = conteudo
+            //setTabelinha(atualizado)
+            //setItemIndex(null)
         }
         else {
             //setTabelinha([...tabelinha, conteudo])
@@ -96,12 +108,14 @@ export default function AddRecord(){
 
         console.log(tabelinha[index])
 
-        
-
-
         if (itemIndex === null) {
             setItemIndex(index);
-            setConteudo(tabelinha[index])
+
+            let data = tabelinha[index].data;
+            data = data.split('T')[0];
+            setConteudo({ ...tabelinha[index], data: data });
+
+            //setConteudo(tabelinha[index])
         }
         else {
             setConteudo(ConteudoInicial)
@@ -111,8 +125,15 @@ export default function AddRecord(){
 
     function Remover(index){
         console.log("aiiiii ")
-        const atualizado = tabelinha.filter((_, i) => i !== index);
-        setTabelinha(atualizado);
+        deleteLog(tabelinha[index]).then((res) => {
+            if (res.status === 200) {
+                console.log("Registro deletado com sucesso!")
+                const atualizado = tabelinha.filter((_, i) => i !== index)
+                setTabelinha(atualizado)
+            }
+        }).catch((error) => {
+            console.error("Erro no servidor:", error);
+        })
     }
 
     return<>
