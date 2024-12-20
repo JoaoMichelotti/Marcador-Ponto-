@@ -1,7 +1,8 @@
 const ConteudoInicial = {
     hEntrada: "",
     hSaida: "",
-    data: ""
+    data: "",
+    id_user: -1
 }
 
 export default ConteudoInicial

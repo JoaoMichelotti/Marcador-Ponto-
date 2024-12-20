@@ -7,18 +7,42 @@ import TimeConvert from "../functions/TimeConverter";
 import Buttons from "../components/Buttons";
 import Pagination from "../components/Pagination";
 import Utilitarios from "../components/Utilitarios";
+import { useNavigate } from "react-router-dom";
+import { getAllLogs, createLog } from "../functions/ServerRiquisitions";
+
 export default function AddRecord(){
 
     const [conteudo, setConteudo] = useState(ConteudoInicial)
     const [tabelinha, setTabelinha] = useState([])
     const [itemIndex, setItemIndex] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
+    const [id_userC, setId_user] = useState(localStorage.getItem("userID"))  
     const [itemPerPages] = useState(6)
     const [Slice, setSlice] = useState([])
 
     const lastPostIndex = currentPage * itemPerPages
     const firstPostIndex = lastPostIndex - itemPerPages
-    
+    const navigate = useNavigate();
+
+    useEffect( () => {
+
+        const token = localStorage.getItem("userToken");
+        
+        if(!token){
+            navigate('/'); 
+        }
+
+        getAllLogs(id_userC).then((res) => { 
+            if (res.status === 200) {
+                setTabelinha(res.data)
+            }
+        }).catch((error) => {   
+
+            console.error("Erro no servidor:", error);
+
+        })
+    }, [])
+
     
     useEffect(() => {
 
@@ -36,8 +60,12 @@ export default function AddRecord(){
     function Enviar(evento) {
         evento.preventDefault();
 
-        console.log(conteudo)
+        
 
+        const novoConteudo = { ...conteudo, id_user: id_userC };
+        setConteudo(novoConteudo);
+
+        console.log(conteudo)
         if (itemIndex != null) {
             const atualizado = [...tabelinha]
             atualizado[itemIndex] = conteudo
@@ -45,7 +73,19 @@ export default function AddRecord(){
             setItemIndex(null)
         }
         else {
-            setTabelinha([...tabelinha, conteudo])
+            //setTabelinha([...tabelinha, conteudo])
+
+            createLog(novoConteudo).then((res) => {
+                if (res.status === 201) {
+                    //setTabelinha([...tabelinha, conteudo])
+                    console.log("Registro criado com sucesso!")
+                    setTabelinha([...tabelinha, novoConteudo])
+                }
+
+            }).catch((error) => {
+                console.error("Erro no servidor:", error);
+            })
+
             console.log(tabelinha)
             
         }
@@ -53,6 +93,11 @@ export default function AddRecord(){
     }
 
     function Editar(index) {
+
+        console.log(tabelinha[index])
+
+        
+
 
         if (itemIndex === null) {
             setItemIndex(index);
@@ -98,7 +143,8 @@ export default function AddRecord(){
                     currentPage={currentPage}>  
                     </Pagination>}>
                 {tabelinha.length > 0 && Slice.map((item, index) => {
-                    const [ano, mes, dia] = item.data.split('-');
+                    const formattedDate = item.data.split('T')[0];
+                    const [ano, mes, dia] = formattedDate.split('-');
                     const dataLocal = new Date(ano, mes - 1, dia); // Meses em JavaScript começam do 0
                     return <tr key={index}>
                             <td>{item.hEntrada}</td>
