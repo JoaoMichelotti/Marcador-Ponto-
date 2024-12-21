@@ -1,11 +1,11 @@
-import db from "../db/connection.js"
+import pool from "../db/connection.js";
 
 const createRecord = async (req, res) => {
 
     const { hentrada, hsaida, datahoje, id_user } = req.body;
 
     try {
-      await db.query("INSERT INTO usersLogs (hentrada, hsaida, datahoje, id_user) VALUES (?, ?, ?, ?)", [hentrada, hsaida, datahoje, id_user]);
+      await pool.query("INSERT INTO usersLogs (hentrada, hsaida, data, user_id) VALUES ($1, $2, $3, $4)", [hentrada, hsaida, datahoje, id_user]);
       res.status(201).json({ message: "Record created!" });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -19,7 +19,7 @@ const getAllRecordsForAUser = async (req, res) => {
     const { id_user } = req.body;
 
     try {
-        const [rows] = await db.query("select id, time_format(hentrada, '%H:%i') as hEntrada, time_format(hsaida, '%H:%i') as hSaida, date(datahoje) as data from userslogs where id_user = ?", [id_user])
+        const{ rows } = await pool.query("select id, TO_CHAR(hentrada, 'HH24:MI') as hEntrada, TO_CHAR(hsaida, 'HH24:MI') AS hSaida, TO_CHAR(data, 'YYYY-MM-DD') AS data  from userslogs where user_id = $1", [id_user])
         res.status(200).json(rows)
     }
     catch(err){''
@@ -32,7 +32,7 @@ const updateRecord = async (req, res) => {
     const { hentrada, hsaida, datahoje, id_user } = req.body;
 
     try {
-        await db.query("UPDATE usersLogs SET hentrada = ?, hsaida = ?, datahoje = ? WHERE id_user = ?", [hentrada, hsaida, datahoje, id_user]);
+        await pool.query("UPDATE usersLogs SET hentrada = $1, hsaida = $2, data = $3 WHERE user_id = $4", [hentrada, hsaida, datahoje, id_user])
         res.status(200).json({ message: "Record updated!" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -44,7 +44,7 @@ const deleteRecord = async (req, res) => {
     const { id } = req.body;
 
     try {
-        await db.query("DELETE FROM usersLogs WHERE id = ?", [id]);
+        await pool.query("DELETE FROM usersLogs WHERE id = $1", [id]);
         res.status(200).json({ message: "Record deleted!" });
     } catch (err) {
         res.status(500).json({ error: err.message });

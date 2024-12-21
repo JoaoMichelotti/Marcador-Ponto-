@@ -1,22 +1,19 @@
-import db from "../db/connection.js"
+import pool from "../db/connection.js";
 import jwt from "jsonwebtoken"
 
 const getAllUsers = async (req, res) => {
-
-    try {
-        const [rows] = await db.query("select * from users")
-        res.status(200).json(rows)
-    }
-    catch(err){
-        res.status(500).json({ error: err.message })
-    }
-
-}
+  try {
+      const { rows } = await pool.query("SELECT * FROM users");
+      res.status(200).json(rows);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
 
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-      await db.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, password]);
+      await pool.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [name, email, password]);
       res.status(201).json({ message: "User created!" });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -32,7 +29,7 @@ const getUserByEmail = async (req, res) => {
 
   try {
     // Consulta o banco
-    const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Usuário não encontrado' }); // Retorna 404

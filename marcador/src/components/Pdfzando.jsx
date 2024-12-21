@@ -67,10 +67,10 @@ export default function Pdfzando(props){
                     const dataLocal = new Date(ano, mes - 1, dia);
                     return <View style={styles.tableRow} key={index}>
                             <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>{item.hEntrada}</Text>
+                                <Text style={styles.tableCell}>{item.hentrada}</Text>
                             </View>
                             <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>{item.hSaida}</Text>
+                                <Text style={styles.tableCell}>{item.hsaida}</Text>
                             </View>
                             <View style={styles.tableCol}>
                                 <Text style={styles.tableCell}>{dataLocal.toLocaleDateString('pt-BR')}</Text>

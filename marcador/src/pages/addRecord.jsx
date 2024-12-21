@@ -111,9 +111,7 @@ export default function AddRecord(){
         if (itemIndex === null) {
             setItemIndex(index);
 
-            let data = tabelinha[index].data;
-            data = data.split('T')[0];
-            setConteudo({ ...tabelinha[index], data: data });
+            setConteudo(tabelinha[index]);
 
             //setConteudo(tabelinha[index])
         }
@@ -140,13 +138,13 @@ export default function AddRecord(){
         <Principal>
             <InputField onEnviar={Enviar}>
                     <label htmlFor="entrada">Horário de entrada:</label>
-                        <input type="time" id="entrada" name="hEntrada" 
-                        value={conteudo.hEntrada} required
+                        <input type="time" id="entrada" name="hentrada" 
+                        value={conteudo.hentrada} required
                         onChange={Mudar}/>
                 
                     <label htmlFor="saida">Horário de saída:</label>
-                        <input type="time" id="saida" name="hSaida"
-                        value={conteudo.hSaida} required
+                        <input type="time" id="saida" name="hsaida"
+                        value={conteudo.hsaida} required
                         onChange={Mudar}/>
 
                     <label htmlFor="data">Data:</label>
@@ -164,12 +162,11 @@ export default function AddRecord(){
                     currentPage={currentPage}>  
                     </Pagination>}>
                 {tabelinha.length > 0 && Slice.map((item, index) => {
-                    const formattedDate = item.data.split('T')[0];
-                    const [ano, mes, dia] = formattedDate.split('-');
+                    const [ano, mes, dia] = item.data.split('-');
                     const dataLocal = new Date(ano, mes - 1, dia); // Meses em JavaScript começam do 0
                     return <tr key={index}>
-                            <td>{item.hEntrada}</td>
-                            <td>{item.hSaida}</td>
+                            <td>{item.hentrada}</td>
+                            <td>{item.hsaida}</td>
                             <td>{dataLocal.toLocaleDateString('pt-BR')}</td>
                             <td>{TimeConvert(item, "Individual")}</td>
                             <td><Buttons imagem="/editar-texto.png" info="editar" onClick={() => Editar(index)}/>
