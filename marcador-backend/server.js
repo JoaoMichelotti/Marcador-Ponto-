@@ -13,6 +13,8 @@ app.use(express.json())
 
 app.use(userRouter)
 app.use(recordRouter)
-app.listen(5000, () => {
-    console.log(`Server running on http://localhost:${5000}`)
-})
+const PORT = process.env.PORT || 5000; // Use uma porta padrão ou a porta gerenciada pela Vercel
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
