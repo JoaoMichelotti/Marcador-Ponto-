@@ -47,7 +47,7 @@ const getUserByEmail = async (req, res) => {
     }
 
     // Usuário encontrado
-    return res.status(200).json({ message: 'Usuário encontrado', token, user: user._id });
+    return res.status(200).json({ message: 'Usuário encontrado', user: user._id });
 
   } catch (error) {
     console.error('Erro interno no servidor:', error);
