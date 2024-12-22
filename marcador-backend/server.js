@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import userRouter from "./routes/userRoutes.js"
 import recordRouter from "./routes/recordsRoutes.js"
+import "./db/connection.js"
+
 
 const app = express()
 

@@ -1,10 +1,10 @@
-import pool from "../db/connection.js";
+import { usuario } from "../db/Users.js";
 import jwt from "jsonwebtoken"
 
 const getAllUsers = async (req, res) => {
   try {
-      const { rows } = await pool.query("SELECT * FROM users");
-      res.status(200).json(rows);
+      const users = await usuario.find();
+      res.status(200).json(users);
   } catch (err) {
       res.status(500).json({ error: err.message });
   }
@@ -13,7 +13,19 @@ const getAllUsers = async (req, res) => {
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-      await pool.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [name, email, password]);
+
+      const existingUser = await usuario.findOne({ email });
+
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already exists!" });
+      }
+
+      const newUser = new usuario({
+        name,
+        email,
+        password // Aqui você deve aplicar uma criptografia no password antes de salvar
+     });
+     await newUser.save(); // Salva o usuário no banco MongoDB
       res.status(201).json({ message: "User created!" });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -29,20 +41,20 @@ const getUserByEmail = async (req, res) => {
 
   try {
     // Consulta o banco
-    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = await usuario.findOne({ email });
 
-    if (rows.length === 0) {
+    if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' }); // Retorna 404
     }
 
 
-    const user = rows[0];
+    
     const token = jwt.sign({id: user.id, email: user.email}, process.env.TOKEN_KEY, {
       expiresIn: "1h"
     })
 
     // Usuário encontrado
-    return res.status(200).json({ message: 'Usuário encontrado', token, user: user.id});
+    return res.status(200).json({ message: 'Usuário encontrado', token, user: user._id });
 
   } catch (error) {
     console.error('Erro interno no servidor:', error);
