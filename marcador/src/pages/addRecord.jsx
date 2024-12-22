@@ -37,9 +37,9 @@ export default function AddRecord(){
 
     useEffect( () => {
 
-        const token = localStorage.getItem("userToken");
+        const userLogin = localStorage.getItem("userID");
         
-        if(!token){
+        if(!userLogin){
             navigate('/'); 
         }
 

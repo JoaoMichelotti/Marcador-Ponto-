@@ -1,5 +1,4 @@
 import { usuario } from "../db/Users.js";
-import jwt from "jsonwebtoken"
 
 const getAllUsers = async (req, res) => {
   try {
@@ -46,12 +45,6 @@ const getUserByEmail = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' }); // Retorna 404
     }
-
-
-    
-    const token = jwt.sign({id: user.id, email: user.email}, process.env.TOKEN_KEY, {
-      expiresIn: "1h"
-    })
 
     // Usuário encontrado
     return res.status(200).json({ message: 'Usuário encontrado', token, user: user._id });

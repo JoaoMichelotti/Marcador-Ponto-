@@ -27,7 +27,6 @@ export default function Login() {
                         if (res.status === 200) {
                             const token = res.data.token;
                             const id = res.data.user;
-                            localStorage.setItem("userToken", token);
                             localStorage.setItem("userID", id);
                             navigate('/dashboard'); // Redireciona para o dashboard
                         }

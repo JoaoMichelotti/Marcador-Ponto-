@@ -1,5 +1,4 @@
 import { Registro } from "../db/Logs.js";
-import mongoose from "mongoose"
 const createRecord = async (req, res) => {
     const { hentrada, hsaida, datahoje, id_user } = req.body;
 
