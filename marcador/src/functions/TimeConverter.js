@@ -1,9 +1,9 @@
 export default function TimeConvert(props, execucao){
     if (execucao == "Individual") {
-        if (props.hsaida) {
+        if (props.hSaida) {
 
-            const [horasE, minutosE] = props.hentrada.split(":").map(Number)
-            const [horasS, minutosS] = props.hsaida.split(":").map(Number)
+            const [horasE, minutosE] = props.hEntrada.split(":").map(Number)
+            const [horasS, minutosS] = props.hSaida.split(":").map(Number)
 
             const minutostotalE = horasE * 60 + minutosE
             const minutostotalS = horasS * 60 + minutosS
@@ -24,8 +24,8 @@ export default function TimeConvert(props, execucao){
             let total = 0
             for (let i = 0; i < props.length; i++) {
                 
-                const [horasE, minutosE] = props[i].hentrada.split(":").map(Number)
-                const [horasS, minutosS] = props[i].hsaida.split(":").map(Number)
+                const [horasE, minutosE] = props[i].hEntrada.split(":").map(Number)
+                const [horasS, minutosS] = props[i].hSaida.split(":").map(Number)
                 
                 const minutostotalE = horasE * 60 + minutosE
                 const minutostotalS = horasS * 60 + minutosS

@@ -1,7 +1,6 @@
 const ConteudoInicial = {
-    id: -1,
-    hentrada: "",
-    hsaida: "",
+    hEntrada: "",
+    hSaida: "",
     data: "",
     id_user: -1
 }

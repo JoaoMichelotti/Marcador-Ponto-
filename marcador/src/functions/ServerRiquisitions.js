@@ -16,8 +16,8 @@ async function createLog(log) {
         method: "POST",
         url: "http://localhost:5000/createrecord",
         data: {
-            hentrada: log.hentrada,
-            hsaida: log.hsaida,
+            hentrada: log.hEntrada,
+            hsaida: log.hSaida,
             datahoje: log.data,
             id_user: log.id_user
         }
@@ -39,8 +39,8 @@ async function updateLog(log) {
         method: "POST",
         url: "http://localhost:5000/updaterecord",
         data: {
-            hentrada: log.hentrada,
-            hsaida: log.hsaida,
+            hentrada: log.hEntrada,
+            hsaida: log.hSaida,
             datahoje: log.data,
             id_user: log.id_user
         }

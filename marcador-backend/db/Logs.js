@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const registroSchema = new mongoose.Schema({
-  hentrada: Date,
-  hsaida: Date,
+  hentrada: String,
+  hsaida: String,
   data: Date,
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }
 });

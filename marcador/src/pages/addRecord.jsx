@@ -24,6 +24,17 @@ export default function AddRecord(){
     const firstPostIndex = lastPostIndex - itemPerPages
     const navigate = useNavigate();
 
+    const fetchLogs = () => {
+        getAllLogs(id_userC).then((res) => {
+            if (res.status === 200) {
+                setTabelinha(res.data);
+            }
+        }).catch((error) => {
+            console.error("Erro no servidor:", error);
+        });
+    };
+
+
     useEffect( () => {
 
         const token = localStorage.getItem("userToken");
@@ -32,25 +43,16 @@ export default function AddRecord(){
             navigate('/'); 
         }
 
-        getAllLogs(id_userC).then((res) => { 
-            if (res.status === 200) {
-                setTabelinha(res.data)
-                
-            }
-        }).catch((error) => {   
-
-            console.error("Erro no servidor:", error);
-
-        })
+        fetchLogs();
     }, [])
-
     
     useEffect(() => {
 
         const itemsSlice = tabelinha.slice(firstPostIndex, lastPostIndex)
         setSlice(itemsSlice)
         console.log(tabelinha)
-    }, [tabelinha, currentPage])
+        
+    }, [currentPage, tabelinha])
 
     function Mudar(evento) {
         const campo = evento.target.name 
@@ -91,7 +93,7 @@ export default function AddRecord(){
                 if (res.status === 201) {
                     //setTabelinha([...tabelinha, conteudo])
                     console.log("Registro criado com sucesso!")
-                    setTabelinha([...tabelinha, novoConteudo])
+                    fetchLogs();
                 }
 
             }).catch((error) => {
@@ -123,6 +125,7 @@ export default function AddRecord(){
 
     function Remover(index){
         console.log("aiiiii ")
+
         deleteLog(tabelinha[index]).then((res) => {
             if (res.status === 200) {
                 console.log("Registro deletado com sucesso!")
@@ -138,13 +141,13 @@ export default function AddRecord(){
         <Principal>
             <InputField onEnviar={Enviar}>
                     <label htmlFor="entrada">Horário de entrada:</label>
-                        <input type="time" id="entrada" name="hentrada" 
-                        value={conteudo.hentrada} required
+                        <input type="time" id="entrada" name="hEntrada" 
+                        value={conteudo.hEntrada} required
                         onChange={Mudar}/>
                 
                     <label htmlFor="saida">Horário de saída:</label>
-                        <input type="time" id="saida" name="hsaida"
-                        value={conteudo.hsaida} required
+                        <input type="time" id="saida" name="hSaida"
+                        value={conteudo.hSaida} required
                         onChange={Mudar}/>
 
                     <label htmlFor="data">Data:</label>
@@ -165,8 +168,8 @@ export default function AddRecord(){
                     const [ano, mes, dia] = item.data.split('-');
                     const dataLocal = new Date(ano, mes - 1, dia); // Meses em JavaScript começam do 0
                     return <tr key={index}>
-                            <td>{item.hentrada}</td>
-                            <td>{item.hsaida}</td>
+                            <td>{item.hEntrada}</td>
+                            <td>{item.hSaida}</td>
                             <td>{dataLocal.toLocaleDateString('pt-BR')}</td>
                             <td>{TimeConvert(item, "Individual")}</td>
                             <td><Buttons imagem="/editar-texto.png" info="editar" onClick={() => Editar(index)}/>

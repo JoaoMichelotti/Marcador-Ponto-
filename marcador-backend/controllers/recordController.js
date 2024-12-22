@@ -1,5 +1,5 @@
 import { Registro } from "../db/Logs.js";
-
+import mongoose from "mongoose"
 const createRecord = async (req, res) => {
     const { hentrada, hsaida, datahoje, id_user } = req.body;
 
@@ -9,8 +9,8 @@ const createRecord = async (req, res) => {
 
     try {
         const newLog = new Registro({
-            hentrada: new Date(hentrada),
-            hsaida: hsaida ? new Date(hsaida) : null,
+            hentrada: hentrada,
+            hsaida: hsaida ? hsaida : null,
             data: new Date(datahoje),
             user_id: id_user,
         });
@@ -31,7 +31,7 @@ const getAllRecordsForAUser = async (req, res) => {
     const { id_user } = req.body;
 
     try {
-        const registros = await Registro.find({ user_id: mongoose.Types.ObjectId(id_user) }).select(
+        const registros = await Registro.find({ user_id: id_user }).select(
             'hentrada hsaida data' // Seleciona somente os campos relevantes
           );
           
@@ -42,8 +42,8 @@ const getAllRecordsForAUser = async (req, res) => {
         // Formata as datas de hentrada, hsaida e data
         const formattedRecords = registros.map((registro) => ({
             id: registro._id,
-            hEntrada: registro.hentrada.toLocaleTimeString('pt-BR', { hour12: false }), // Formato HH:MM
-            hSaida: registro.hsaida.toLocaleTimeString('pt-BR', { hour12: false }),
+            hEntrada: registro.hentrada, // Já está no formato HH:mm
+            hSaida: registro.hsaida || null, // Já está no formato HH:mm ou é null
             data: registro.data.toISOString().split('T')[0], // Formato YYYY-MM-DD
         }));
 
@@ -61,14 +61,14 @@ const updateRecord = async (req, res) => {
     try {
           // Converte os campos hentrada, hsaida e datahoje para Date, se necessário
         const updatedFields = {
-            hentrada: new Date(hentrada), // Certifique-se que os campos são tratados como Date
-            hsaida: new Date(hsaida),
+            hentrada: hentrada, // Certifique-se que os campos são tratados como Date
+            hsaida: hsaida,
             data: new Date(datahoje)
         };
 
          // Atualiza o registro no MongoDB usando o user_id (assumindo que é um ObjectId)
         const result = await Registro.updateOne(
-            { user_id: mongoose.Types.ObjectId(id_user) }, // Filtra pelo user_id
+            { user_id: id_user }, // Filtra pelo user_id
             { $set: updatedFields } // Atualiza os campos
         );
 
@@ -89,7 +89,7 @@ const deleteRecord = async (req, res) => {
 
   try {
     // Deleta o registro pelo ID do MongoDB
-    const result = await Registro.deleteOne({ _id: mongoose.Types.ObjectId(id) });
+    const result = await Registro.deleteOne({ _id: id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Nenhum registro encontrado para deletar.' });
