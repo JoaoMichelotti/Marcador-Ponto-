@@ -4,7 +4,7 @@ async function checkEmail(pessoa) {
 
     return axios({
         method: "POST",
-        url: "http://localhost:5000/getuseremail",
+        url: "https://marcador-ponto-backend.vercel.app/getuseremail",
         data: {
             email: pessoa.email
         }
@@ -14,7 +14,7 @@ async function checkEmail(pessoa) {
 async function createLog(log) {
     return axios({
         method: "POST",
-        url: "http://localhost:5000/createrecord",
+        url: "https://marcador-ponto-backend.vercel.app/createrecord",
         data: {
             hentrada: log.hEntrada,
             hsaida: log.hSaida,
@@ -27,7 +27,7 @@ async function createLog(log) {
 async function getAllLogs(id_user) {
     return axios({
         method: "POST",
-        url: "http://localhost:5000/getallrecordsforauser",
+        url: "https://marcador-ponto-backend.vercel.app/getallrecordsforauser",
         data: {
             id_user: id_user
         }
@@ -37,7 +37,7 @@ async function getAllLogs(id_user) {
 async function updateLog(log) {
     return axios({
         method: "POST",
-        url: "http://localhost:5000/updaterecord",
+        url: "https://marcador-ponto-backend.vercel.app/updaterecord",
         data: {
             hentrada: log.hEntrada,
             hsaida: log.hSaida,
@@ -50,7 +50,7 @@ async function updateLog(log) {
 async function deleteLog(log) {
     return axios({
         method: "POST",
-        url: "http://localhost:5000/deleterecord",
+        url: "https://marcador-ponto-backend.vercel.app/deleterecord",
         data: {
             id: log.id
         }
